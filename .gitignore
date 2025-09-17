@@ -1,0 +1,7 @@
+.env
+/gcp
+/node_modules
+/librarian/.env
+/librarian/node_modules
+/analyst/.env
+/analyst/node_modules

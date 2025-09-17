@@ -1,0 +1,10 @@
+[
+  {
+    "name": "durzhaven_vestnik",
+    "link": "https://dv.parliament.bg/DVWeb/broeveList.faces",
+    "scrapper": "durzhavenVestnik",
+    "directory": "durzhaven_vestnik",
+    "collection": "durzhaven_vestnik",
+    "extension": "pdf"
+  }
+]
