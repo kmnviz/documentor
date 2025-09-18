@@ -109,7 +109,7 @@ const store = async (name, article, analysis) => {
         const db = mongoClient.db(process.env.MONGO_DB);
         const collection = db.collection(name);
 
-        const record = await collection.updateOne(
+        await collection.updateOne(
             { name: article.name },
             { $set: { analysis: analysis }},
             { upsert: true },
