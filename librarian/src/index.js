@@ -1,15 +1,22 @@
+import path from 'path';
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 import dotenv from 'dotenv';
-dotenv.config();
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
 import puppeteer from 'puppeteer';
 import { MongoClient } from 'mongodb';
 import axios from 'axios';
 import { Storage } from '@google-cloud/storage';
-import library from './library.json' with { type: 'json' };
+import library from '../../config/library.json' with { type: 'json' };
 import scrappers from './scrappers/index.js';
 
 const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017';
 const mongoClient = new MongoClient(mongoUri);
-const storage = new Storage({keyFilename: process.env.GCP_AUTH_FILE_PATH});
+const keyFilePath = path.resolve(__dirname, process.env.GCP_AUTH_FILE_PATH);
+const storage = new Storage({keyFilename: keyFilePath});
+const bucketName = process.env.GCP_BUCKET_NAME;
 
 const find = async (link, scrapper) => {
     const browser = await puppeteer.launch({ headless: true });
@@ -59,7 +66,7 @@ const store = async (file, article) => {
         });
 
         const destFilePath = `${article.directory}/${file.name}.${article.extension}`;
-        const bucket = storage.bucket(process.env.GCP_BUCKET_NAME);
+        const bucket = storage.bucket(bucketName);
         const bucketFile = bucket.file(destFilePath);
         const writeStream = bucketFile.createWriteStream({
             resumable: false,
@@ -75,6 +82,7 @@ const store = async (file, article) => {
                     const record = await collection.insertOne({
                         ...file,
                         filePath: destFilePath,
+                        downloadLink: `https://storage.googleapis.com/${bucketName}/${destFilePath}`,
                     });
                     console.log(`store.stored: ${record.insertedId}`);
                     resolve();
@@ -100,4 +108,5 @@ const run = async () => {
     }
 }
 
+(async () => { await run(); })();
 export default run;

@@ -1,9 +1,9 @@
-import articles from '../articles.json' with { type: 'json' };
+import collections from '../../../config/collections.json' with { type: 'json' };
 import durzhavenVestnik from './durzhavenVestnik.js';
 
-const scrapper = (article) => {
-    switch (article) {
-        case articles.DURZHAVEN_VESTNIK:
+const scrapper = (collection) => {
+    switch (collection) {
+        case collections.DURZHAVEN_VESTNIK:
             return durzhavenVestnik;
         default:
             return null;
