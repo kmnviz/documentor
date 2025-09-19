@@ -1,5 +1,3 @@
-import dotenv from 'dotenv';
-dotenv.config();
 import { CronJob } from 'cron';
 import librarianRun from './librarian/src/index.js';
 import analystRun from './analyst/src/index.js';
