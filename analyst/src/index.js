@@ -27,11 +27,11 @@ const openai = new OpenAI({
     apiKey: process.env.DEEPSEEK_API_KEY,
 });
 
+await mongoClient.connect();
+const db = mongoClient.db(process.env.MONGO_DB);
+
 const fetch = async () => {
     try {
-        await mongoClient.connect();
-        const db = mongoClient.db(process.env.MONGO_DB);
-
         const articles = {};
         const names = Object.values(collections);
         for (let i = 0; i < names.length; i++) {
@@ -105,8 +105,6 @@ const analyze = async (name, article, text, prompt) => {
 
 const store = async (name, article, analysis) => {
     try {
-        await mongoClient.connect();
-        const db = mongoClient.db(process.env.MONGO_DB);
         const collection = db.collection(name);
 
         await collection.updateOne(
@@ -140,5 +138,5 @@ const run = async () => {
     }
 }
 
-(async () => { await run(); })();
+(async () => { return await run(); })();
 export default run;

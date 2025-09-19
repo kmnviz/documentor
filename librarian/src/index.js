@@ -18,6 +18,9 @@ const keyFilePath = path.resolve(__dirname, process.env.GCP_AUTH_FILE_PATH);
 const storage = new Storage({keyFilename: keyFilePath});
 const bucketName = process.env.GCP_BUCKET_NAME;
 
+await mongoClient.connect();
+const db = mongoClient.db(process.env.MONGO_DB);
+
 const find = async (link, scrapper) => {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
@@ -49,8 +52,6 @@ const find = async (link, scrapper) => {
 
 const store = async (file, article) => {
     try {
-        await mongoClient.connect();
-        const db = mongoClient.db(process.env.MONGO_DB);
         const collection = db.collection(article.collection);
         const isExisting = await collection.findOne({ name: file.name });
 
@@ -108,5 +109,5 @@ const run = async () => {
     }
 }
 
-(async () => { await run(); })();
+(async () => { return await run(); })();
 export default run;

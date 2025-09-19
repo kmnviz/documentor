@@ -6,3 +6,5 @@
 /librarian/node_modules
 /analyst/.env
 /analyst/node_modules
+/publisher/.env
+/publisher/node_modules
