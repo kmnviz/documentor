@@ -7,6 +7,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "scripts": {
+    "run": "node index.js"
+  },
   "dependencies": {
     "cron": "^4.3.3"
   }
